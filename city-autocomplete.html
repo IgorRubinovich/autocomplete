@@ -1,0 +1,61 @@
+<dom-module id="city-autocomplete">
+    <style>
+        :host {
+            display: inline-block;
+            width: 100%;
+        }
+        #input{
+        @apply(--input-location);
+        }
+    </style>
+    <template>
+        <google-maps-api api-key="AIzaSyBbbTEqaAjcWVDdrIpwlS-0Tl4CTheJThE" id="maps" libraries="places" on-api-load="on_api_load"></google-maps-api>
+        <input id="input" placeholder="[[ placeholder ]]" name='city' class="input" type="text" value="{{value}}" />
+
+    </template>
+</dom-module>
+<script>
+    Polymer({
+        is: 'city-autocomplete',
+        properties: {
+            value: {
+                type: String,
+                notify: true
+            },
+            options: {
+                type: Object,
+                value:  {
+                    types: ['(cities)'],
+                    componentRestrictions: {country: "cz"}
+                 }
+            },
+            place: {
+                type: Object,
+                value: function () { return {}; },
+                notify: true
+            },
+            placeholder: {
+                type: String,
+                value: '',
+                notify: true
+            }
+        },
+        on_api_load: function () {
+            this.autocomplete = new google.maps.places.Autocomplete(this.$.input, {
+                types: ['(cities)'],
+                componentRestrictions: {country: "cz"}
+            });
+            google.maps.event.addListener(this.autocomplete, 'place_changed', this.on_change_place.bind(this));
+        },
+        on_change_place: function () {
+            this.place = this.autocomplete.getPlace();
+            if (!this.place.address_components) {
+                return;
+            }
+
+
+            this.value = this.place.name;
+
+        }
+    });
+</script>
