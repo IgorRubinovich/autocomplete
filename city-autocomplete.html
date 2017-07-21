@@ -9,8 +9,8 @@
         }
     </style>
     <template>
-        <google-maps-api api-key="AIzaSyBmlMnLp6VW3XNlUIxZrU0HT6zZatwvXSo" id="maps" libraries="places" on-api-load="on_api_load"></google-maps-api>
-        <input id="input" placeholder="[[ placeholder ]]" name='city' class="input" type="text" value="{{value}}" />
+        <google-maps-api api-key="[[ apiKey ]]" id="maps" libraries="places" on-api-load="on_api_load"></google-maps-api>
+        <input id="input" placeholder="[[ placeholder ]]" name='[[ name ]]' class="input" type="text" value="{{value}}" />
 
     </template>
 </dom-module>
@@ -38,7 +38,15 @@
                 type: String,
                 value: '',
                 notify: true
-            }
+            },
+			name: {
+				type : String,
+				value : ''
+			},
+			apiKey : { 
+				type : String,
+				value : ''
+			}
         },
         on_api_load: function () {
             this.autocomplete = new google.maps.places.Autocomplete(this.$.input, {
